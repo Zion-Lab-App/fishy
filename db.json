@@ -1,0 +1,25 @@
+{
+  "list": [
+    {
+      "fishName": "Kapr",
+      "weight": 3.8,
+      "length": 56,
+      "date": "28/8/2025",
+      "id": "1"
+    },
+    {
+      "fishName": "Štika",
+      "weight": 4.9,
+      "length": 87,
+      "date": "14/02/2025",
+      "id": "2"
+    },
+    {
+      "fishName": "Žralok bílý",
+      "weight": 2132.5,
+      "length": 486,
+      "date": "13/06/2025",
+      "id": "3"
+    }
+  ]
+}
