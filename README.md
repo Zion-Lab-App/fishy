@@ -1,73 +1,66 @@
-# React + TypeScript + Vite
+# Fishy - Aplikácia pre úlovky
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + Vite aplikácia s Express backend serverom.
 
-Currently, two official plugins are available:
+## Lokálne vývojové prostredie
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Po `git pull` a `npm install`:
 
-## React Compiler
+1. **Spusti backend server** (v jednom termináli):
+   ```bash
+   npm run server
+   ```
+   Backend beží na `http://localhost:3001`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Spusti frontend** (v druhom termináli):
+   ```bash
+   npm run dev
+   ```
+   Frontend beží na `http://localhost:5173` (alebo iný port)
 
-## Expanding the ESLint configuration
+Frontend automaticky volá backend na `http://localhost:3001`.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Deploy zmeny na produkciu
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Keď máš hotové zmeny a chceš ich nasadiť na https://timly.tech:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Pridaj zmeny do gitu:**
+   ```bash
+   git add .
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. **Commitni zmeny:**
+   ```bash
+   git commit -m "Popis toho, čo si urobil"
+   ```
+   Napríklad: `git commit -m "Pridaný nový formulár pre úlovky"`
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Pushni na GitHub:**
+   ```bash
+   git push origin master
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4. **Počkaj cca 1 minútu** - GitHub Actions automaticky:
+   - Zbuilduje aplikáciu
+   - Deployne ju na server
+   - Reštartuje backend server
+   
+5. **Zmeny sa prejavia na https://timly.tech**
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Môžeš sledovať priebeh deployu na: https://github.com/Zion-Lab-App/fishy/actions
+
+## API Endpointy
+
+- `GET /list` - Zoznam všetkých úlovkov
+- `GET /list/:id` - Detail konkrétneho úlovku
+- `POST /list` - Vytvorenie nového úlovku
+- `PUT /list/:id` - Aktualizácia úlovku
+- `DELETE /list/:id` - Zmazanie úlovku
+
+Dáta sa ukladajú do `db.json` súboru.
+
+## Technológie
+
+- **Frontend:** React 19, TypeScript, Vite
+- **Backend:** Express.js, Node.js
+- **Styling:** Tailwind CSS
