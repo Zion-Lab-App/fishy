@@ -38,7 +38,7 @@ jobs:
           target: "/tmp/fishy-deploy"
           strip_components: 0
 
-      - name: Move files and set permissions on server
+      - name: Move files, set permissions and restart backend
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -51,5 +51,13 @@ jobs:
             rm -rf /tmp/fishy-deploy
             chown -R www-data:www-data ${{ secrets.DEPLOY_PATH }}
             chmod -R 755 ${{ secrets.DEPLOY_PATH }}
+            cd /var/www/fishy
+            npm install --production
+            if systemctl is-active --quiet fishy-backend; then
+              systemctl restart fishy-backend
+            elif [ -f /etc/systemd/system/fishy-backend.service ]; then
+              systemctl daemon-reload
+              systemctl restart fishy-backend
+            fi
             echo "Deploy completed successfully!"
 
