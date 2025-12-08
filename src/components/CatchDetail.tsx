@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import type { Catch } from "../types.ts";
 import api from "../api.ts";
 
 const CatchDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [catchItem, setCatchItem] = useState<Catch | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
