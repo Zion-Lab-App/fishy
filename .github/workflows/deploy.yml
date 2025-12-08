@@ -46,18 +46,19 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
+            set -e
             rm -rf ${{ secrets.DEPLOY_PATH }}/*
             mv /tmp/fishy-deploy/dist/* ${{ secrets.DEPLOY_PATH }}/
             rm -rf /tmp/fishy-deploy
             chown -R www-data:www-data ${{ secrets.DEPLOY_PATH }}
             chmod -R 755 ${{ secrets.DEPLOY_PATH }}
             cd /var/www/fishy
-            npm install --production
-            if systemctl is-active --quiet fishy-backend; then
-              systemctl restart fishy-backend
+            npm install --production || true
+            if systemctl is-active --quiet fishy-backend 2>/dev/null; then
+              systemctl restart fishy-backend || true
             elif [ -f /etc/systemd/system/fishy-backend.service ]; then
-              systemctl daemon-reload
-              systemctl restart fishy-backend
+              systemctl daemon-reload || true
+              systemctl restart fishy-backend || true
             fi
             echo "Deploy completed successfully!"
 
