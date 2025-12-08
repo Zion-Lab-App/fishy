@@ -35,11 +35,10 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           source: "dist/*"
-          target: ${{ secrets.DEPLOY_PATH }}
+          target: "/tmp/fishy-deploy"
           strip_components: 0
-          rm: true
 
-      - name: Set permissions and cleanup on server
+      - name: Move files and set permissions on server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -47,6 +46,9 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
+            rm -rf ${{ secrets.DEPLOY_PATH }}/*
+            mv /tmp/fishy-deploy/dist/* ${{ secrets.DEPLOY_PATH }}/
+            rm -rf /tmp/fishy-deploy
             chown -R www-data:www-data ${{ secrets.DEPLOY_PATH }}
             chmod -R 755 ${{ secrets.DEPLOY_PATH }}
             echo "Deploy completed successfully!"
