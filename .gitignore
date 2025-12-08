@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Sensitive files - nepridávať do gitu
+GITHUB_SECRETS_VALUES.txt
+FORPSI_DNS_NASTAVENIE.md
+*.key
+*.pem
+.env.local
+.env.production.local
